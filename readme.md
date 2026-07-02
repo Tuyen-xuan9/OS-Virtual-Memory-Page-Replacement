@@ -217,13 +217,12 @@ Step,Page,Fault/Hit,Evicted,Frame_1,Frame_2,Frame_3,Total_Faults,Total_Hits
 
 Bộ test bao gồm:
 
-- **Đối chiếu giáo trình**: dùng ví dụ chuẩn `[7,0,1,2,0,3,0,4,2,3,0,3]`, `frame_size=3` từ *Operating System Concepts 10th Edition* (trang 400–403), kiểm tra tính chất tối ưu **OPT ≤ LRU ≤ FIFO**.
-- **Edge cases**: reference string rỗng, `frame_size=1`, toàn bộ trang giống nhau, toàn bộ trang duy nhất, `frame_size <= 0` phải raise `ValueError`.
-- **Belady's Anomaly**: kiểm tra FIFO với chuỗi `[1,2,3,4,1,2,5,1,2,3,4,5]` — 3 frame cho 9 fault, 4 frame cho 10 fault (tăng ngược đời khi tăng frame), đồng thời xác nhận OPT **không** bị hiện tượng này.
-- **LRU_CLOCK**: kiểm tra độ lệch số fault so với LRU chính xác (cho phép ≤ 30% do là thuật toán xấp xỉ).
-- **Step model**: `step_index`, `hit_rate + fault_rate == 1.0`, `to_dict()`, `to_json()`, `to_csv_row()`, so sánh `__eq__`.
-- **OPT next_use**: kiểm tra trường `next_use` được gán đúng.
-
+- **Đối chiếu giáo trình**
+- **Edge cases**
+- **Belady's Anomaly**
+- **LRU_CLOCK**
+- **Step model**
+- **OPT next_use**
 Chạy độc lập:
 ```bash
 python unit_tests/test_algorithms.py
@@ -237,11 +236,10 @@ Benchmark hiệu năng với ma trận:
 
 - **Reference size**: 1,000 / 5,000 / 10,000 / 50,000 / 100,000
 - **Frame size**: 3 / 5 / 10 / 20
-- **3 thuật toán** × 3 lần lặp (`REPEAT=3`, lấy `min` thời gian bằng `time.perf_counter`)
-
+- **3 thuật toán** × 3 lần lặp 
 Kết quả xuất ra:
 - `output/stress_results.csv` — dữ liệu thô (faults, hits, hit rate, min/avg/max ms).
-- `output/stress_summary.txt` — tóm tắt nhanh nhất/chậm nhất mỗi thuật toán + so sánh tại mốc 100k references.
+- `output/stress_summary.txt` — tóm tắt nhanh.
 
 ### Bộ test case CSV có sẵn (`input/`)
 
@@ -250,11 +248,11 @@ Kết quả xuất ra:
 | `input.csv`, `basic_testcase.csv` | Test case cơ bản (dựa trên ví dụ giáo trình) |
 | `belady_test.csv` | Kiểm tra hiện tượng Belady's Anomaly |
 | `testcase_no_page_fault.csv` | Reference lặp lại tuần hoàn đúng bằng frame size → không phát sinh fault sau vòng đầu |
-| `testcase_large_frames.csv` | Frame size lớn (20) |
+| `testcase_large_frames.csv` | Frame size lớn |
 | `testcase_extreme_page_fault.csv` | Frame size = 1, toàn trang khác nhau → fault tối đa |
-| `testcase_invalid_characters.csv` | Chứa ký tự không hợp lệ (`a`, `b`, `c`...) để test khả năng lọc bỏ |
-| `testcase_invalid_negative_frame.csv` | Frame size âm → test validate lỗi |
-| `stress_test_1/2/3.csv` | Dữ liệu ngẫu nhiên (seed cố định = 42) cho stress test quy mô 1k/10k/50k references |
+| `testcase_invalid_characters.csv` | Chứa ký tự không hợp lệ để test khả năng lọc bỏ |
+| `testcase_invalid_negative_frame.csv` | Frame size âm |
+| `stress_test_1/2/3.csv` | Dữ liệu ngẫu nhiên |
 ---
 
 ## Tài liệu tham khảo
