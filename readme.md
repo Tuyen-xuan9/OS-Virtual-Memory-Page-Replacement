@@ -22,9 +22,9 @@
 | Nhóm | Chi tiết |
 |---|---|
 | **3 thuật toán** | FIFO, LRU, OPT. |
-| **Gantt Chart trực quan** | **animation step-by-step** với thanh tốc độ tuỳ chỉnh (30–600 ms/step), điều khiển Play/Pause/Reset/End. |
-| **So sánh thuật toán** | Tab Comparison: card thống kê từng thuật toán (Faults, Hits, Hit Rate, Exec Time). |
-| **Nhập liệu linh hoạt** | Load file CSV có sẵn hoặc nhập tay reference string + frame size ngay trên GUI. |
+| **Gantt Chart trực quan** | **animation step-by-step**, điều khiển Play/Pause/Reset/End. |
+| **So sánh thuật toán** | Tab Comparison: Faults, Hits, Hit Rate, Exec Time. |
+| **Nhập liệu linh hoạt** | Load file CSV có sẵn hoặc nhập tay. |
 | **Xuất báo cáo CSV** | 2 chế độ: xuất từng thuật toán riêng lẻ, hoặc xuất đồng thời cả 3. |
 | **Stress Test / Benchmark** | Script độc lập đo thời gian chạy 3 thuật toán với reference string tới 100,000 phần tử. |
 | **Xử lý lỗi đầu vào** | Tự động bỏ qua ký tự không hợp lệ, số âm, kiểm tra `frame_size` trong khoảng 1–20. |
