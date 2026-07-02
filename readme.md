@@ -21,27 +21,27 @@
 
 | Nhóm | Chi tiết |
 |---|---|
-| **3 thuật toán** | FIFO, LRU (`OrderedDict` O(1)), OPT (Belady, precompute `next_use` O(n)). Có thêm biến thể `LRU_CLOCK` (Second-Chance xấp xỉ LRU) trong lõi thuật toán. |
+| **3 thuật toán** | FIFO, LRU, OPT. |
 | **Gantt Chart trực quan** | **animation step-by-step** với thanh tốc độ tuỳ chỉnh (30–600 ms/step), điều khiển Play/Pause/Reset/End. |
 | **So sánh thuật toán** | Tab Comparison: card thống kê từng thuật toán (Faults, Hits, Hit Rate, Exec Time). |
 | **Nhập liệu linh hoạt** | Load file CSV có sẵn hoặc nhập tay reference string + frame size ngay trên GUI. |
 | **Xuất báo cáo CSV** | 2 chế độ: xuất từng thuật toán riêng lẻ, hoặc xuất đồng thời cả 3. |
-| **Stress Test / Benchmark** | Script độc lập đo thời gian chạy 3 thuật toán với reference string tới 100,000 phần tử, xuất `stress_results.csv` + `stress_summary.txt`. |
-| **Xử lý lỗi đầu vào** | Tự động bỏ qua ký tự không hợp lệ, số âm, kiểm tra `frame_size` trong khoảng 1–20, báo lỗi rõ ràng qua message box. |
+| **Stress Test / Benchmark** | Script độc lập đo thời gian chạy 3 thuật toán với reference string tới 100,000 phần tử. |
+| **Xử lý lỗi đầu vào** | Tự động bỏ qua ký tự không hợp lệ, số âm, kiểm tra `frame_size` trong khoảng 1–20. |
 
 ---
 
 ## 📁 Cấu trúc thư mục
 
 ```
-├── main.py                        # Entry point — chạy: python main.py
+├── main.py                        # Entry point 
 │
 ├── algorithms/                    # Lõi thuật toán thay thế trang
-│   ├── base.py                    #   ABC PageReplacementAlgorithm (interface chung)
-│   ├── fifo.py                    #   FIFO — deque, O(1) evict
-│   ├── lru.py                     #   LRU (OrderedDict) + LRUClock (Second-Chance)
-│   ├── opt.py                     #   OPT/Belady — precompute next_use O(n)
-│   └── registry.py                #   AlgoRegistry — tra cứu thuật toán theo tên
+│   ├── base.py                    #   ABC PageReplacementAlgorithm 
+│   ├── fifo.py                    #   FIFO — deque
+│   ├── lru.py                     #   LRU + LRUClock
+│   ├── opt.py                     #   OPT/Belady 
+│   └── registry.py                #   AlgoRegistry 
 │
 ├── models/
 │   └── step.py                    # Step — trạng thái 1 bước (frames, fault/hit,
@@ -51,15 +51,15 @@
 │   └── file_handler.py            # Đọc input CSV, ghi output CSV, tạo sample/stress inputs
 │
 ├── GUI/
-│   ├── display.py                 # App (tk.Tk) — cửa sổ chính, điều phối toàn bộ UI
-│   ├── gantt.py                   # GanttTab — vẽ bảng Gantt + animation + tooltip
-│   ├── compare.py                 # CompareTab — bar chart + bảng so sánh 3 thuật toán
+│   ├── display.py                 # App (tk.Tk) 
+│   ├── gantt.py                   # GanttTab
+│   ├── compare.py                 # CompareTab 
 │   └── widgets.py                 # Bảng màu (C), font helper (F), widget dùng chung
-│                                   #   (PillStat, IconButton, ScrollableCanvas, Tooltip...)
+│                                   
 │
 ├── unit_tests/
-│   ├── test_algorithms.py         # TestRunner — đối chiếu giáo trình, Belady, Step model
-│   └── stress_runner.py           # Benchmark hiệu năng (1k → 100k refs)
+│   ├── test_algorithms.py         # TestRunner 
+│   └── stress_runner.py           # Benchmark hiệu năng 
 │
 ├── input/                         # File CSV đầu vào (mẫu + test case)
 │   ├── input.csv
@@ -72,7 +72,7 @@
 │   ├── testcase_invalid_characters.csv
 │   └── testcase_invalid_negative_frame.csv
 │
-└── output/                        # File CSV kết quả sau khi export
+└── output/                        # File CSV mẫu kết quả sau khi export
     ├── output_FIFO.csv
     ├── output_LRU.csv
     └── output_OPT.csv
@@ -91,7 +91,7 @@
     ```bash
     sudo apt install python3-tk
     ```
-- Không cần cài thêm thư viện ngoài (không dùng `matplotlib`, `pandas`,... — biểu đồ được vẽ thủ công bằng `tkinter.Canvas`).
+- Không cần cài thêm thư viện ngoài.
 
 ---
 
@@ -109,8 +109,6 @@ venv\Scripts\activate         # Windows
 # 3. Chạy chương trình
 python main.py
 ```
-
-Khi khởi động, chương trình tự tạo `input/input.csv` và `input/belady_test.csv` mẫu nếu chưa tồn tại, đồng thời tự động nạp `input/input.csv` làm dữ liệu mặc định.
 
 ### Chạy Unit Test độc lập (không cần GUI)
 
