@@ -1,19 +1,17 @@
 # Virtual Memory Page Replacement Simulator
 
-Ứng dụng desktop (Tkinter) mô phỏng trực quan 3 thuật toán thay thế trang bộ nhớ ảo kinh điển: **FIFO**, **LRU** và **OPT (Optimal)**, kèm biểu đồ Gantt animation, so sánh hiệu năng, xuất báo cáo CSV và bộ unit test đối chiếu giáo trình.
+Ứng dụng  mô phỏng trực quan 3 thuật toán thay thế trang bộ nhớ ảo kinh điển: **FIFO**, **LRU** và **OPT (Optimal)**
 
 ---
 
 ## 📋 Mục lục
 
 - [Tính năng chính](#-tính-năng-chính)
-- [Giao diện](#-giao-diện)
 - [Cấu trúc thư mục](#-cấu-trúc-thư-mục)
 - [Yêu cầu hệ thống](#-yêu-cầu-hệ-thống)
 - [Cài đặt & Chạy](#-cài-đặt--chạy)
 - [Hướng dẫn sử dụng](#-hướng-dẫn-sử-dụng)
 - [Định dạng file CSV](#-định-dạng-file-csv)
-- [Thuật toán](#-thuật-toán)
 - [Unit Test & Stress Test](#-unit-test--stress-test)
 - [Tài liệu tham khảo](#-tài-liệu-tham-khảo)
 
@@ -24,25 +22,12 @@
 | Nhóm | Chi tiết |
 |---|---|
 | **3 thuật toán** | FIFO, LRU (`OrderedDict` O(1)), OPT (Belady, precompute `next_use` O(n)). Có thêm biến thể `LRU_CLOCK` (Second-Chance xấp xỉ LRU) trong lõi thuật toán. |
-| **Gantt Chart trực quan** | Canvas scroll ngang/dọc, tô màu Fault/Hit/New-Frame, tooltip hover chi tiết từng bước, **animation step-by-step** với thanh tốc độ tuỳ chỉnh (30–600 ms/step), điều khiển Play/Pause/Reset/End. |
-| **So sánh thuật toán** | Tab Comparison: card thống kê từng thuật toán (Faults, Hits, Hit Rate, Exec Time), biểu đồ cột vẽ bằng `tkinter.Canvas` (không cần matplotlib), bảng xếp hạng 🥇🥈🥉, đánh dấu 👑 thuật toán tối ưu nhất. |
-| **Nhập liệu linh hoạt** | Load file CSV có sẵn hoặc nhập tay reference string + frame size (slider 1–10) ngay trên GUI. |
-| **Xuất báo cáo CSV** | 2 chế độ: xuất từng thuật toán riêng lẻ, hoặc xuất đồng thời cả 3 (`FIFO.csv`, `LRU.csv`, `OPT.csv`) vào 1 thư mục. File xuất gồm đầy đủ metadata (hit rate, fault rate, exec time) + bảng chi tiết từng bước (kể cả `Next_Use` cho OPT). |
-| **Unit Test tích hợp** | Tab "Unit Tests" chạy trực tiếp trong GUI, đối chiếu kết quả với ví dụ giáo trình *Operating System Concepts 10th Edition* (Silberschatz, Galvin, Gagne) và kiểm tra hiện tượng **Belady's Anomaly**. |
+| **Gantt Chart trực quan** | **animation step-by-step** với thanh tốc độ tuỳ chỉnh (30–600 ms/step), điều khiển Play/Pause/Reset/End. |
+| **So sánh thuật toán** | Tab Comparison: card thống kê từng thuật toán (Faults, Hits, Hit Rate, Exec Time). |
+| **Nhập liệu linh hoạt** | Load file CSV có sẵn hoặc nhập tay reference string + frame size ngay trên GUI. |
+| **Xuất báo cáo CSV** | 2 chế độ: xuất từng thuật toán riêng lẻ, hoặc xuất đồng thời cả 3. |
 | **Stress Test / Benchmark** | Script độc lập đo thời gian chạy 3 thuật toán với reference string tới 100,000 phần tử, xuất `stress_results.csv` + `stress_summary.txt`. |
 | **Xử lý lỗi đầu vào** | Tự động bỏ qua ký tự không hợp lệ, số âm, kiểm tra `frame_size` trong khoảng 1–20, báo lỗi rõ ràng qua message box. |
-
----
-
-## Giao diện
-
-Ứng dụng gồm 3 tab chính bên phải và 1 panel cấu hình cuộn được bên trái:
-
-1. **Gantt Chart** — bảng thay thế trang theo từng bước tham chiếu, có thể tua animation.
-2. **Comparison** — so sánh song song FIFO / LRU / OPT bằng card + bar chart + bảng.
-3. **Unit Tests** — chạy và xem kết quả kiểm thử ngay trong ứng dụng.
-
-Theme màu: *Catppuccin Mocha* (dark mode), định nghĩa tại `GUI/widgets.py`.
 
 ---
 
@@ -222,36 +207,6 @@ Step,Page,Fault/Hit,Evicted,Frame_1,Frame_2,Frame_3,Total_Faults,Total_Hits
 4,2,FAULT,7,2,0,1,4,0
 5,0,HIT,-,2,0,1,4,1
 ...
-```
-
----
-
-## Thuật toán
-
-Tất cả thuật toán kế thừa `PageReplacementAlgorithm` (`algorithms/base.py`) với interface thống nhất:
-
-```python
-run(refs: list[int], frame_size: int) -> list[Step]
-count_faults(steps: list[Step]) -> int
-```
-
-| Thuật toán | File | Ý tưởng | Độ phức tạp |
-|---|---|---|---|
-| **FIFO** | `algorithms/fifo.py` | Trang nạp vào bộ nhớ **sớm nhất** sẽ bị thay thế trước. Dùng `deque` để lấy trang cũ nhất trong O(1). | O(n) tổng thể |
-| **LRU** | `algorithms/lru.py` | Trang **ít được dùng gần đây nhất** bị thay thế. Dùng `OrderedDict` (`move_to_end`, `popitem(last=False)`) để đạt O(1) mỗi thao tác. | O(n) tổng thể |
-| **LRU_CLOCK** | `algorithms/lru.py` | Biến thể **Second-Chance / Clock** xấp xỉ LRU bằng reference bit + con trỏ vòng, không cần cấu trúc dữ liệu O(1) đặc biệt. | O(n) amortized |
-| **OPT** | `algorithms/opt.py` | Thuật toán tối ưu lý thuyết (Belady) — thay trang **sẽ không dùng lâu nhất trong tương lai**. Precompute bảng `next_use[i][page]` bằng cách quét ngược từ cuối chuỗi (O(n)), sau đó mỗi bước evict chỉ cần tra O(frame_size). | O(n·f) |
-
-Mỗi bước chạy sinh ra một đối tượng **`Step`** (`models/step.py`) lưu: trang hiện tại, snapshot frames, fault/hit, trang bị evict, tổng fault/hit tích lũy, hit rate/fault rate, và `next_use` (riêng cho OPT — dùng để hiển thị tooltip).
-
-### Registry pattern
-
-`algorithms/registry.py` cung cấp `AlgoRegistry` — tra cứu class thuật toán theo tên chuỗi (`"FIFO"`, `"LRU"`, `"OPT"`), giúp GUI và batch export tránh chuỗi `if/elif` dài dòng:
-
-```python
-from algorithms.registry import AlgoRegistry
-cls   = AlgoRegistry.get("LRU")
-steps = cls.run(refs, frame_size)
 ```
 
 ---
