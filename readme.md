@@ -4,7 +4,7 @@
 
 ---
 
-## 📋 Mục lục
+## Mục lục
 
 - [Tính năng chính](#-tính-năng-chính)
 - [Cấu trúc thư mục](#-cấu-trúc-thư-mục)
