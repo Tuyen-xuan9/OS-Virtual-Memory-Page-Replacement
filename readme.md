@@ -116,7 +116,7 @@ Kết quả được ghi vào `output/stress_results.csv` và `output/stress_sum
 ## Hướng dẫn sử dụng
 
 1. **Nhập dữ liệu**
-   - Bấm **📂 Load CSV file** để chọn file `.csv` có sẵn (xem [định dạng](#-định-dạng-file-csv)), hoặc
+   - Bấm **📂 Load CSV file** để chọn file `.csv` có sẵn, hoặc
    - Kéo thanh trượt **FRAME SIZE** (1–10) và gõ trực tiếp reference string (cách nhau bằng dấu phẩy) vào ô **REFERENCE STRING**.
 
 2. **Chạy thuật toán**
