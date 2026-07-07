@@ -69,9 +69,6 @@
     └── output_OPT.csv
 ```
 
-> ⚠️ **Lưu ý:** `main.py` import theo đường dẫn tuyệt đối từ gốc project (`from GUI.display import App`, `from algorithms.fifo import FIFO`, v.v.). Vì vậy cần giữ đúng cấu trúc thư mục và **luôn chạy chương trình từ thư mục gốc**.
-
-
 ## Yêu cầu hệ thống
 
 - **Python 3.8+** 
